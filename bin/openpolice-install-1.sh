@@ -1,7 +1,6 @@
 #!/bin/bash
 set -x
-
-echo Running OpenPolice Intaller ******* Act 1 ******* Prepping fresh Ubuntu 18.04 server with a non-root user
+# ******* Running OpenPolice Intaller ******* Act 1 ******* Prepping fresh Ubuntu 18.04 server with a non-root user
 
 # Create swap file, important for servers with little memory
 /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024

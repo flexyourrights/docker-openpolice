@@ -1,8 +1,6 @@
 #!/bin/bash
 set -x
-
-echo Running OpenPolice Intaller ******* Act 2 ******* Copy Laravel package, docker composer, and prep environment config
-
+# ******* Running OpenPolice Intaller ******* Act 2 ******* Copy Laravel package, docker composer, and prep environment config
 codename=bionic
 dockerComposeVersion=1.23.2
 

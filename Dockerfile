@@ -50,28 +50,36 @@ COPY --chown=www:www . /var/www
 USER www
 
 # Install Open Police Complaints and SurvLoop
+RUN cd /var/www
+RUN php artisan key:generate
+RUN php artisan make:auth
 #RUN mkdir -p /var/www/database/seeds
 #RUN chown -R www:www /var/www/database/seeds
 RUN composer require flexyourrights/openpolice
 RUN composer update
+RUN composer install
+CMD php artisan serve --host=0.0.0.0 --port=8000
 
-# Set directory permissions and overrides needed by SurvLoop
-RUN cp /var/www/vendor/wikiworldorder/survloop/src/Models/User.php /var/www/app/User.php
+USER root
+
+# Copy existing application directory contents
+ADD vendor/wikiworldorder /var/www/vendor
+ADD vendor/flexyourrights /var/www/vendor
+
+# Set directory permissions and overrides needed by SurvLoop?
 #RUN chmod -R gu+w www-data:33 ./app/Models
 #RUN chmod -R gu+w www-data:33 ./app/User.php
 #RUN chmod -R gu+w www-data:33 ./database
 #RUN chmod -R gu+w www-data:33 ./storage/app
 
-RUN php artisan key:generate
-RUN php artisan make:auth
+RUN php artisan config:clear
+RUN php artisan cache:clear
 RUN php artisan vendor:publish
-RUN php artisan migrate
-RUN php artisan optimize
-RUN composer dump-autoload
-RUN php artisan db:seed --class=SurvLoopSeeder
-RUN php artisan db:seed --class=ZipCodeSeeder
-RUN php artisan db:seed --class=OpenPoliceSeeder
-RUN php artisan db:seed --class=OpenPoliceDeptSeeder
+
+# Change current user to www
+
+USER www
+
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
