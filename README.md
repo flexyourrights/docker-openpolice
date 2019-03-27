@@ -44,13 +44,13 @@ $ exit
 <h3 class="slBlueDark">Now logged in as a non-root user</h3>
 <pre>$ sudo chmod +x /usr/local/lib/docker-openpolice/bin/*.sh
 $ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-2.sh
-$ cd ~/openpolice
 </pre>
 <p>Build and boot Docker Containers...</p>
 <pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-3.sh
 </pre>
 <p>Update the .env file for your system with a database password you can create now. (Also a great time to change the user and database names, if you like.)</p>
 <pre>
+$ cd ~/openpolice
 $ docker-compose exec app nano .env
 </pre>
 <pre>DB_DATABASE=openpolice
@@ -65,9 +65,12 @@ root@9472354969ea:/# mysql -u root -p</pre>
 mysql> FLUSH PRIVILEGES;
 mysql> EXIT;
 root@9472354969ea:/# exit</pre>
+<h4>Tweak Composer.json</h4>
+
+
 <h4>Fill Database</h4>
 <p>Once your database is created, and login info linked with Laravel, we can install database...</p>
-<pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
+<pre>$ echo '0' | bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
 
 
 
