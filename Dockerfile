@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     wget \
     git \
+    sudo \
     curl
 
 # Clear cache
@@ -45,41 +46,9 @@ COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
-
-# Change current user to www
-USER www
-
-# Install Open Police Complaints and SurvLoop
-RUN cd /var/www
-RUN php artisan key:generate
-RUN php artisan make:auth
-#RUN mkdir -p /var/www/database/seeds
-#RUN chown -R www:www /var/www/database/seeds
-RUN composer require flexyourrights/openpolice
-RUN composer update
-RUN composer install
-CMD php artisan serve --host=0.0.0.0 --port=8000
-
-USER root
-
-# Copy existing application directory contents
-ADD vendor/wikiworldorder /var/www/vendor
-ADD vendor/flexyourrights /var/www/vendor
-
-# Set directory permissions and overrides needed by SurvLoop?
-#RUN chmod -R gu+w www-data:33 ./app/Models
-#RUN chmod -R gu+w www-data:33 ./app/User.php
-#RUN chmod -R gu+w www-data:33 ./database
-#RUN chmod -R gu+w www-data:33 ./storage/app
-
-RUN php artisan config:clear
-RUN php artisan cache:clear
-RUN php artisan vendor:publish
-
-# Change current user to www
+#COPY --chown=www:www composer.json composer.json
 
 USER www
-
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

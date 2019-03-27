@@ -39,20 +39,36 @@ $ /usr/local/lib/docker-openpolice/bin/openpolice-install-1.sh <span class="red"
 $ exit
 # ssh <span class="red">survuser</span>@<span class="red">YOUR.SERVER.IP</span>
 </pre>
+
 <p>Exit to logout as root, and log back in as <span class="red">survuser</span>. Your key should work, and you should have sudo power. During these installs you can accept all defaults, but I do opt for the latest manufacturer's version of the OpenSSH package.</p>
 <h3 class="slBlueDark">Now logged in as a non-root user</h3>
 <pre>$ sudo chmod +x /usr/local/lib/docker-openpolice/bin/*.sh
 $ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-2.sh
+$ cd ~/openpolice
 </pre>
-$ docker-compose exec app nano .env
-</pre>
-<p>Update the .env file for your system with a database password you can create now. (Also a great time to change the user and database names, if you like.)</p>
-<pre>DB_DATABASE=openpolice
-DB_USERNAME=openpoliceuser
-DB_PASSWORD=<span class="red">openpoliceuserpass</span></pre>
-<p>Install database...</p>
+<p>Build and boot Docker Containers...</p>
 <pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-3.sh
 </pre>
+<p>Update the .env file for your system with a database password you can create now. (Also a great time to change the user and database names, if you like.)</p>
+<pre>
+$ docker-compose exec app nano .env
+</pre>
+<pre>DB_DATABASE=openpolice
+DB_USERNAME=openpoliceuser
+DB_PASSWORD=<span class="red">openpoliceuserpassword</span></pre>
+<h4>Create Database & Permissions</h4>
+<p>If you haven't already, enter the database container, then the MYSQL command line, using the strong database user password you entered in the .env file.</p>
+<pre>$ docker-compose exec db bash
+root@9472354969ea:/# mysql -u root -p</pre>
+<p>Next, give your <span class="red">openpoliceuser</span> permission to your new database.</p>
+<pre>mysql> GRANT ALL ON <span class="red">openpolice</span>.* TO '<span class="red">openpoliceuser</span>'@'%' IDENTIFIED BY '<span class="red">openpoliceuserpassword</span>';
+mysql> FLUSH PRIVILEGES;
+mysql> EXIT;
+root@9472354969ea:/# exit</pre>
+<h4>Fill Database</h4>
+<p>Once your database is created, and login info linked with Laravel, we can install database...</p>
+<pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
+
 
 
 
