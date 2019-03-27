@@ -5,7 +5,9 @@ codename=bionic
 dockerComposeVersion=1.23.2
 
 sudo apt update
+sudo killall apt apt-get
 yes | sudo apt-get upgrade
+sudo killall apt apt-get
 
 git clone https://github.com/laravel/laravel.git ~/openpolice
 cp -rf /usr/local/lib/docker-openpolice ~/openpolice/
@@ -22,6 +24,7 @@ cp ~/openpolice/docker-openpolice/.env ~/openpolice/.env
 
 # Installing Docker
 yes | sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo killall apt apt-get
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $codename stable"
 sudo apt update
