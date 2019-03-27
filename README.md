@@ -58,7 +58,8 @@ DB_USERNAME=openpoliceuser
 DB_PASSWORD=<span class="red">openpoliceuserpassword</span></pre>
 <h4>Create Database & Permissions</h4>
 <p>If you haven't already, enter the database container, then the MYSQL command line, using the strong database user password you entered in the .env file.</p>
-<pre>$ docker-compose exec db bash
+<pre>$ cd ~/openpolice
+$ docker-compose exec db bash
 root@9472354969ea:/# mysql -u root -p</pre>
 <p>Next, give your <span class="red">openpoliceuser</span> permission to your new database.</p>
 <pre>mysql> GRANT ALL ON <span class="red">openpolice</span>.* TO '<span class="red">openpoliceuser</span>'@'%' IDENTIFIED BY '<span class="red">openpoliceuserpassword</span>';
@@ -66,12 +67,24 @@ mysql> FLUSH PRIVILEGES;
 mysql> EXIT;
 root@9472354969ea:/# exit</pre>
 <h4>Tweak Composer.json</h4>
-
+<p>Update `composer.json` to add requirements and an easier SurvLoop and OpenPolice reference:</p>
+<pre>...
+"autoload": {
+    ...
+    "psr-4": {
+        ...
+        "SurvLoop\\": "vendor/wikiworldorder/survloop/src/",
+        "OpenPolice\\": "vendor/flexyourrights/openpolice/src/",
+    }
+    ...
+},
+...</pre>
 
 <h4>Fill Database</h4>
 <p>Once your database is created, and login info linked with Laravel, we can install database...</p>
-<pre>$ echo '0' | bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
-
+<pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
+<p>Which provider or tag's files would you like to publish?</p>
+<pre>0</pre>
 
 
 
