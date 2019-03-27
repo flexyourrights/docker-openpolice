@@ -49,8 +49,7 @@ $ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-2.sh
 <pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-3.sh
 </pre>
 <p>Update the .env file for your system with a database password you can create now. (Also a great time to change the user and database names, if you like.)</p>
-<pre>
-$ cd ~/openpolice
+<pre>$ cd ~/openpolice
 $ docker-compose exec app nano .env
 </pre>
 <pre>DB_DATABASE=openpolice
@@ -67,6 +66,8 @@ mysql> FLUSH PRIVILEGES;
 mysql> EXIT;
 root@9472354969ea:/# exit</pre>
 <h4>Tweak Composer.json</h4>
+<pre>$ cd ~/openpolice
+$ docker-compose exec app nano composer.json</pre>
 <p>Update `composer.json` to add requirements and an easier SurvLoop and OpenPolice reference:</p>
 <pre>...
 "autoload": {
@@ -83,8 +84,7 @@ root@9472354969ea:/# exit</pre>
 <h4>Fill Database</h4>
 <p>Once your database is created, and login info linked with Laravel, we can install database...</p>
 <pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
-<p>Which provider or tag's files would you like to publish?</p>
-<pre>0</pre>
+<p>Which provider or tag's files would you like to publish? <b>0</b></p>
 
 
 
