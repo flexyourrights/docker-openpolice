@@ -8,10 +8,8 @@ docker-compose exec app php artisan make:auth
 docker-compose exec app composer require flexyourrights/openpolice
 
 docker-compose exec app cp /var/www/config/app.php /var/www/config/app.bak.php
-docker-compose exec app sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' /var/www/config/app.php
-docker-compose exec app sed -i 's/SurvLoop\\SurvLoopServiceProvider::class,/SurvLoop\\SurvLoopServiceProvider::class,\n        OpenPolice\\OpenPoliceServiceProvider::class,/g' /var/www/config/app.php
-docker-compose exec app sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n       "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' /var/www/config/app.php
-docker-compose exec app sed -i 's/WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,\n       "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,/g' /var/www/config/app.php
+docker-compose exec app sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        OpenPolice\\OpenPoliceServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' /var/www/config/app.php
+docker-compose exec app sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n       "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,\n\n       "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' /var/www/config/app.php
 
 docker-compose exec app cp /var/www/config/auth.php /var/www/config/auth.bak.php
 docker-compose exec app sed -i 's/App\\User::class/App\\Models\\User::class/g' /var/www/config/auth.php
