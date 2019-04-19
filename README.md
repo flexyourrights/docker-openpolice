@@ -40,6 +40,32 @@ $ </pre>
 
 
 
+<h1 class="slBlueDark">How To Rebuild this OpenPolice Docker Installation from Scratch (on Mac)</h1>
+<p>First, install Docker for Mac, and sign into it. Then hop into the terminal...</p>
+<pre>
+$ git clone https://github.com/laravel/laravel.git opc
+$ git clone https://github.com/flexyourrights/docker-openpolice.git opc/docker-openpolice
+$ cd opc
+$ cp docker-openpolice/{Dockerfile,docker-compose.yml} ./
+$ cp .env.example .env
+$ cp docker-openpolice/.env .env
+$ docker run --rm -v $(pwd):/app composer install
+$ docker-compose up -d
+$ chmod +x docker-openpolice/bin/*.sh
+$ docker-openpolice/bin/openpolice-install-4.sh
+</pre>
+
+<p>Need to clean your slate and try again?..</p>
+<pre>$ docker-compose down
+$ docker system prune -a
+$ docker rmi $(docker images -a -q)</pre>
+<p>Endless restarting error message?.. maybe try,</p>
+<pre>$ docker update --restart=unless-stopped app</pre>
+
+
+
+
+
 <h1 class="slBlueDark">How To Rebuild this OpenPolice Docker Installation from Scratch (on Digital Ocean)</h1>
 <p>This process runs a variety of <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-laravel-nginx-and-mysql-with-docker-compose" target="_blank">Digital Ocean's layered tutorials</a>. I don't understand all of it yet, so will leave the explanations to their superb articles. This variation also adds SurvLoop and OpenPolice structures.</p>
 <p>After starting up a new <b class="red">Ubuntu 18.04</b> Droplet — I couldn't pull this off with less than <span class="red">2GB RAM</span> — connect it with the root account and your SSH key. The first install script will create a non-root user, e.g. <span class="red">survuser</span>. Be sure to create and save a copy of a strong password, which you'll need handy throughout this install:</p>
@@ -97,6 +123,57 @@ $ docker-compose exec app nano composer.json</pre>
 <p>Once your database is created, and login info linked with Laravel, we can install database...</p>
 <pre>$ bash /usr/local/lib/docker-openpolice/bin/openpolice-install-4.sh</pre>
 <p>Which provider or tag's files would you like to publish? <b>0</b></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="slBlueDark">How To Rebuild this OpenPolice Laradock Installation from Scratch</h1>
+<p></p>
+<pre>
+$ git clone https://github.com/laravel/laravel.git opc
+$ cd opc
+$ cp .env.example .env
+$ nano .env
+</pre>
+<p>Change the database connection:</p>
+<pre>
+DB_HOST=mysql
+DB_DATABASE=default
+DB_USERNAME=default
+...
+REDIS_HOST=redis
+QUEUE_HOST=beanstalkd
+</pre>
+
+<pre>
+$ git submodule add https://github.com/Laradock/laradock.git
+$ cd laradock
+$ cp env-example .env
+$ docker-compose up -d nginx mysql
+$ docker-compose exec workspace bash
+
+$ cp https://raw.githubusercontent.com/flexyourrights/docker-openpolice/master/bin/openpolice-laradock-postinstall.sh ./
+$ chmod +x ./openpolice-laradock-postinstall.sh
+$ ./openpolice-laradock-postinstall.sh
+
+$ docker-compose exec workspace composer require flexyourrights/openpolice-website
+</pre>
+
+
+
+
+
 
 
 
