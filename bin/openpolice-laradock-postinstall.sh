@@ -4,34 +4,44 @@ set -x
 
 #docker-compose exec --user root app chown -R www:www ./
 
-docker-compose exec workspace php artisan key:generate
+# Laravel basic preparations
+composer install
+php artisan key:generate
+php artisan make:auth
 
-docker-compose exec workspace php artisan make:auth
-docker-compose exec workspace composer require flexyourrights/openpolice
+# Install SurvLoop & OpenPolice
+composer require flexyourrights/openpolice
 
-docker-compose exec workspace cp /var/www/config/app.php /var/www/config/app.bak.php
-docker-compose exec workspace sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        OpenPolice\\OpenPoliceServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' /var/www/config/app.php
-docker-compose exec workspace sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n       "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,\n\n       "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' /var/www/config/app.php
+# Install SurvLoop & OpenPolice service providers
+cp config/app.php config/app.bak.php
+sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        OpenPolice\\OpenPoliceServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' config/app.php
+sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n       "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,\n\n       "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' config/app.php
 
-docker-compose exec workspace cp /var/www/config/auth.php /var/www/config/auth.bak.php
-docker-compose exec workspace sed -i 's/App\\User::class/App\\Models\\User::class/g' /var/www/config/auth.php
+# Install SurvLoop user model
+cp config/auth.php config/auth.bak.php
+sed -i 's/App\\User::class/App\\Models\\User::class/g' config/auth.php
+cp vendor/wikiworldorder/survloop/src/Models/User.php app/User.php
+sed -i 's/namespace App\\Models;/namespace App;/g' app/User.php
 
-docker-compose exec workspace cp /var/www/vendor/wikiworldorder/survloop/src/Models/User.php /var/www/app/User.php
-docker-compose exec workspace sed -i 's/namespace App\\Models;/namespace App;/g' /var/www/app/User.php
+# Avoid error message from recent Laravel version
+cp /var/www/vendor/wikiworldorder/survloop/src/Controllers/Middleware/routes-api.php /var/www/routes/api.php
 
-docker-compose exec workspace cp /var/www/vendor/wikiworldorder/survloop/src/Controllers/Middleware/routes-api.php /var/www/routes/api.php
+# Clear caches for good measure, then push copies of vendor files
+php artisan optimize
+composer dump-autoload
+echo "0" | php artisan vendor:publish --force
+ls /var/www/database/seeds
 
-docker-compose exec workspace php artisan config:clear
-docker-compose exec workspace php artisan cache:clear
-docker-compose exec workspace php artisan route:clear
-docker-compose exec workspace composer dump-autoload
-docker-compose exec workspace php artisan vendor:publish --force
+# Migrate database designs, and seed with data
+php artisan migrate
 
-docker-compose exec workspace php artisan migrate
-docker-compose exec workspace php artisan db:seed --class=SurvLoopSeeder
-docker-compose exec workspace php artisan db:seed --class=ZipCodeSeeder
-docker-compose exec workspace php artisan db:seed --class=OpenPoliceSeeder
-docker-compose exec workspace php artisan db:seed --class=OpenPoliceDeptSeeder
+php artisan optimize
+composer dump-autoload
 
-docker-compose exec workspace php artisan optimize
-docker-compose exec workspace composer dump-autoload
+php artisan db:seed --class=SurvLoopSeeder
+php artisan db:seed --class=ZipCodeSeeder
+php artisan db:seed --class=OpenPoliceSeeder
+php artisan db:seed --class=OpenPoliceDeptSeeder
+
+php artisan optimize
+composer dump-autoload
