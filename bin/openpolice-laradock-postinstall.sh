@@ -13,18 +13,21 @@ php artisan make:auth
 composer require flexyourrights/openpolice
 
 # Install SurvLoop & OpenPolice service providers
-cp config/app.php config/app.bak.php
-sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        OpenPolice\\OpenPoliceServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' config/app.php
-sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n       "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,\n\n       "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' config/app.php
+#cp config/app.php config/app.bak.php
+#sed -i 's/App\\Providers\\RouteServiceProvider::class,/App\\Providers\\RouteServiceProvider::class,\n\n        OpenPolice\\OpenPoliceServiceProvider::class,\n\n        SurvLoop\\SurvLoopServiceProvider::class,/g' config/app.php
+#sed -i 's/Illuminate\\Support\\Facades\\View::class,/Illuminate\\Support\\Facades\\View::class,\n\n        "OpenPolice" \=\> FlexYourRights\\OpenPolice\\OpenPoliceFacade::class,\n\n        "SurvLoop" \=\> WikiWorldOrder\\SurvLoop\\SurvLoopFacade::class,/g' config/app.php
 
 # Install SurvLoop user model
-cp config/auth.php config/auth.bak.php
+#cp config/auth.php config/auth.bak.php
 sed -i 's/App\\User::class/App\\Models\\User::class/g' config/auth.php
 cp vendor/wikiworldorder/survloop/src/Models/User.php app/User.php
 sed -i 's/namespace App\\Models;/namespace App;/g' app/User.php
 
+sed -i 's/"App\\": "app\/"/"App\\": "app\/",\n\n        "SurvLoop\\": "vendor\/wikiworldorder\/survloop\/src\/",\n\n        "OpenPolice\\": "vendor\/flexyourrights\/openpolice\/src\/"/g' composer.json
+
 # Avoid error message from recent Laravel version
-cp /var/www/vendor/wikiworldorder/survloop/src/Controllers/Middleware/routes-api.php /var/www/routes/api.php
+cp /var/www/vendor/flexyourrights/openpolice/src/Controllers/Middleware/routes-api.php /var/www/routes/api.php
+#cp /var/www/vendor/wikiworldorder/survloop/src/Controllers/Middleware/routes-api.php /var/www/routes/api.php
 
 # Clear caches for good measure, then push copies of vendor files
 php artisan optimize
