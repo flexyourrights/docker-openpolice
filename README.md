@@ -17,21 +17,12 @@ You will need:
 
 <h1 class="slBlueDark">How To Install OpenPolice with Laradock</h1>
 
-<p>First, <a href="https://www.docker.com/get-started" target="_blank">install Docker</a> on Mac, Windows, or an online server. Then...</p>
-<pre>
-$ git clone https://github.com/laravel/laravel.git opc
+<p>First, <a href="https://www.docker.com/get-started" target="_blank">install Docker</a> on Mac, Windows, or an online server. Then grab a copy of Laravel (last tested with v5.8.3)...</p>
+<pre>$ git clone https://github.com/laravel/laravel.git opc
 $ cd opc
-$ cp .env.example .env
-$ nano .env
-</pre>
-<p>Change the database connection:</p>
-<pre>
-DB_HOST=mysql
-DB_DATABASE=default
-DB_USERNAME=default
 </pre>
 
-<p>Next, install and boot up Laradock.</p>
+<p>Next, install and boot up Laradock (last tested with v7.14).</p>
 <pre>
 $ git submodule add https://github.com/Laradock/laradock.git
 $ cd laradock
@@ -57,13 +48,12 @@ Password: secret
 <p>Finally, enter Laradock's workspace container to download and run the Open Police installation script.</p>
 <pre>
 $ docker-compose exec workspace bash
-# cp https://raw.githubusercontent.com/flexyourrights/docker-openpolice/master/bin/openpolice-laradock-postinstall.sh ./
-# chmod +x ./openpolice-laradock-postinstall.sh
-# ./openpolice-laradock-postinstall.sh
+# git clone https://github.com/flexyourrights/docker-openpolice.git
+# chmod +x ./docker-openpolice/bin/*.sh
+# ./docker-openpolice/bin/openpolice-laradock-postinstall.sh
 # docker-compose exec workspace composer require flexyourrights/openpolice-website
 </pre>
-
-<p>If all has gone well, you'll be asked to create a master admin user account when you browse to <a href="http://localhost/" target="_blank">http://localhost/</a>.</p>
+<p>And if all has gone well, you'll be asked to create a master admin user account when you browse to <a href="http://localhost/" target="_blank">http://localhost/</a>.</p>
 
 
 
