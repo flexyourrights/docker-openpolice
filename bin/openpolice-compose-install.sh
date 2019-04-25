@@ -1,14 +1,12 @@
 #!/bin/bash
 set -x
-# ******* Running OpenPolice Laradock Intaller *******
+# ******* Running OpenPolice Intaller *******
 
-cp .env.example .env
-sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' .env
-sed -i 's/DB_DATABASE=homestead/DB_DATABASE=default/g' .env
-sed -i 's/DB_USERNAME=homestead/DB_USERNAME=default/g' .env
+composer global require "laravel/installer"
+composer create-project laravel/laravel $1 "5.8.*"
+cd $1
 
 # Laravel basic preparations
-composer install
 php artisan key:generate
 php artisan make:auth
 

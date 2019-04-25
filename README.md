@@ -15,7 +15,7 @@ You will need:
 
 ## How to use it
 
-<h1 class="slBlueDark">How To Install OpenPolice with Laradock</h1>
+<h2 class="slBlueDark">How To Install OpenPolice with Laradock</h2>
 
 <p>First, <a href="https://www.docker.com/get-started" target="_blank">install Docker</a> on Mac, Windows, or an online server. Then grab a copy of Laravel (last tested with v5.8.3)...</p>
 <pre>$ git clone https://github.com/laravel/laravel.git opc
