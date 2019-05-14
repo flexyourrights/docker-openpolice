@@ -19,7 +19,7 @@ php artisan optimize
 # Install SurvLoop user model
 #cp vendor/wikiworldorder/survloop/src/Models/User.php app/User.php
 #sed -i 's/namespace App\\Models;/namespace App;/g' app/User.php
-sed -i 's/App\\User::class/SurvLoop\\Models\\User::class/g' config/auth.php
+sed -i 's/App\\User::class/App\\Models\\User::class/g' config/auth.php
 
 # Clear caches for good measure, then push copies of vendor files
 echo "0" | php artisan vendor:publish --force
