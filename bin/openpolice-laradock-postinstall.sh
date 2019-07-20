@@ -7,6 +7,9 @@ sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' .env
 sed -i 's/DB_DATABASE=homestead/DB_DATABASE=default/g' .env
 sed -i 's/DB_USERNAME=homestead/DB_USERNAME=default/g' .env
 
+chgrp -R www-data storage bootstrap/cache app/Models
+chmod -R ug+rwx storage bootstrap/cache app/Models
+
 # Laravel basic preparations
 composer install
 php artisan key:generate
