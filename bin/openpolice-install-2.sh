@@ -13,8 +13,8 @@ git clone https://github.com/laravel/laravel.git ~/openpolice
 cp -rf /usr/local/lib/docker-openpolice ~/openpolice/
 cp -rf /usr/local/lib/docker-openpolice/{Dockerfile,docker-compose.yml,.env,php,nginx,mysql} ~/openpolice/
 sudo chmod +x ~/openpolice/docker-openpolice/bin/*.sh
-git clone https://github.com/wikiworldorder/survloop-libraries.git ~/openpolice/vendor/wikiworldorder/survloop-libraries
-git clone https://github.com/wikiworldorder/survloop.git ~/openpolice/vendor/wikiworldorder/survloop
+git clone https://github.com/rockhopsoft/survloop-libraries.git ~/openpolice/vendor/rockhopsoft/survloop-libraries
+git clone https://github.com/rockhopsoft/survloop.git ~/openpolice/vendor/rockhopsoft/survloop
 git clone https://github.com/flexyourrights/openpolice-departments.git ~/openpolice/vendor/flexyourrights/openpolice-departments
 git clone https://github.com/flexyourrights/openpolice.git ~/openpolice/vendor/flexyourrights/openpolice
 cd ~/openpolice
